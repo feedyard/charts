@@ -1,0 +1,10 @@
+name: local-dev
+version: 0.1.0
+appVersion: 0.1.0
+description: services and configuration for local api development targeted to kubernetes deployment
+icon: https://raw.githubusercontent.com/hashicorp/consul/bce3809dfca37b883828c3715b84143dd71c0f85/website/source/assets/images/favicons/android-chrome-512x512.png
+sources:
+- https://github.com/feedyard/charts/local-dev
+maintainers:
+- name: nic cheneweth
+  email: nchenewe@thoughtworks.com

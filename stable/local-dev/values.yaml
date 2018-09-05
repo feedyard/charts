@@ -1,0 +1,11 @@
+# default chart values
+
+# container image versions
+MetricsServerImage: "gcr.io/google_containers/metrics-server-amd64:v0.3.0"
+InfluxDBImage: "k8s.gcr.io/heapster-influxdb-amd64:v1.5.2"
+HeapsterImage: "k8s.gcr.io/heapster-amd64:v1.5.3"
+GrafanaHeapsterImage: "k8s.gcr.io/heapster-grafana-amd64:v4.4.3"
+DashboardImage: "k8s.gcr.io/kubernetes-dashboard-amd64:v1.10.0"
+ElasticsearchImage: "docker.elastic.co/elasticsearch/elasticsearch:6.3.0"
+FluentdImage: "fluent/fluentd-kubernetes-daemonset:v1.2-debian-elasticsearch"
+KibanaImage: "docker.elastic.co/kibana/kibana-oss:6.3.0"

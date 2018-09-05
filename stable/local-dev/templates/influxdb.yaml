@@ -1,0 +1,92 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: influxdb
+  labels:
+    app: influxdb
+  namespace: monitoring
+
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: influxdb
+  namespace: monitoring
+rules:
+  - apiGroups: [""]
+    resources: ["services","endpoints","pods"]
+    verbs: ["get", "list", "watch"]
+
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: influxdb
+  namespace: monitoring
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: influxdb
+subjects:
+- kind: ServiceAccount
+  name: influxdb
+  namespace: monitoring
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: influxdb
+  labels:
+    app: influxdb
+  namespace: monitoring
+spec:
+  selector:
+    matchLabels:
+      app: influxdb
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: influxdb
+    spec:
+      serviceAccountName: influxdb
+      containers:
+        - name: influxdb
+          image: {{ .Values.InfluxDBImage }}
+          imagePullPolicy: IfNotPresent
+          ports:
+          - name: http
+            containerPort: 8083
+          - name: api
+            containerPort: 8086
+          resources:
+            limits:
+              cpu: 100m
+              memory: 500Mi
+          volumeMounts:
+          - name: influxdb-persistent-storage
+            mountPath: /data
+      volumes:
+      - name: influxdb-persistent-storage
+        emptyDir: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: influxdb
+  labels:
+    app: influxdb
+  namespace: monitoring
+spec:
+  selector:
+    app: influxdb
+  ports:
+  - name: http
+    port: 8083
+    targetPort: http
+  - name: api
+    port: 8086
+    targetPort: api
